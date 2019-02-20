@@ -40,7 +40,9 @@ export default {
   },
   data() {
     return {
-      chart: null
+      chart: null,
+      weather_history_dates: [],
+      weather_history_temps: []
     }
   },
   mounted() {
@@ -54,7 +56,33 @@ export default {
     this.chart = null
   },
   methods: {
+    fetchData() {
+      fetch('https://weather-api-01.herokuapp.com/getweather')
+            .then(res => res.json())
+            .then(data => {
+              // eslint-disable-next-line
+              //console.log(data);
+
+              data.forEach(el => {
+                this.weather_history_dates.push(el.date);
+                this.weather_history_temps.push(el.temp);
+              })
+
+                this.chart.setOption({
+                                      xAxis: [{
+                                        data: this.weather_history_dates
+                                      }
+                                      ],
+                                      series: [
+                                        {
+                                          data: this.weather_history_temps
+                                        }
+                                      ]
+                                    });
+            });
+    },
     initChart() {
+
       this.chart = echarts.init(document.getElementById(this.id))
 
       this.chart.setOption({
@@ -83,7 +111,7 @@ export default {
           itemWidth: 14,
           itemHeight: 14,
           itemGap: 13,
-          data: ['Canada', 'CTCC', 'CUCC'],
+          data: ['Temperatura'],
           right: '4%',
           textStyle: {
             fontSize: 12,
@@ -105,11 +133,11 @@ export default {
               color: this.contentcolor
             }
           },
-          data: ['13:00', '13:05', '13:10', '13:15', '13:20', '13:25', '13:30', '13:35', '13:40', '13:45', '13:50', '13:55']
+          data: []
         }],
         yAxis: [{
           type: 'value',
-          name: '(%)',
+          name: '(\u00B0C)',
           axisTick: {
             show: false
           },
@@ -131,41 +159,7 @@ export default {
           }
         }],
         series: [{
-          name: 'Canada',
-          type: 'line',
-          smooth: true,
-          symbol: 'circle',
-          symbolSize: 5,
-          showSymbol: false,
-          lineStyle: {
-            normal: {
-              width: 1
-            }
-          },
-          areaStyle: {
-            normal: {
-              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                offset: 0,
-                color: 'rgba(137, 189, 27, 0.3)'
-              }, {
-                offset: 0.8,
-                color: 'rgba(137, 189, 27, 0)'
-              }], false),
-              shadowColor: 'rgba(0, 0, 0, 0.1)',
-              shadowBlur: 10
-            }
-          },
-          itemStyle: {
-            normal: {
-              color: 'rgb(137,189,27)',
-              borderColor: 'rgba(137,189,2,0.27)',
-              borderWidth: 12
-
-            }
-          },
-          data: [220, 182, 191, 134, 150, 120, 110, 125, 145, 122, 165, 122]
-        }, {
-          name: 'CTCC',
+          name: 'Temperatura',
           type: 'line',
           smooth: true,
           symbol: 'circle',
@@ -197,42 +191,12 @@ export default {
 
             }
           },
-          data: [120, 110, 125, 145, 122, 165, 122, 220, 182, 191, 134, 150]
-        }, {
-          name: 'CUCC',
-          type: 'line',
-          smooth: true,
-          symbol: 'circle',
-          symbolSize: 5,
-          showSymbol: false,
-          lineStyle: {
-            normal: {
-              width: 1
-            }
-          },
-          areaStyle: {
-            normal: {
-              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                offset: 0,
-                color: 'rgba(219, 50, 51, 0.3)'
-              }, {
-                offset: 0.8,
-                color: 'rgba(219, 50, 51, 0)'
-              }], false),
-              shadowColor: 'rgba(0, 0, 0, 0.1)',
-              shadowBlur: 10
-            }
-          },
-          itemStyle: {
-            normal: {
-              color: 'rgb(219,50,51)',
-              borderColor: 'rgba(219,50,51,0.2)',
-              borderWidth: 12
-            }
-          },
-          data: [220, 182, 125, 145, 122, 191, 134, 150, 120, 110, 165, 122]
+          data: []
         }]
       })
+
+      setInterval(this.fetchData(), 10000);
+
     }
   }
 }
