@@ -9,4 +9,4 @@ Vue.js using echart.js and debounce.js with external API Express.js Server.
 ```
 
 ### External API Server on GitHub
-See [Configuration Reference](https://github.com/ske1337/weather-api).
+See [Repository](https://github.com/ske1337/weather-api).
