@@ -1,29 +1,12 @@
 # live-data-chart
 
-## Project setup
+### Demo
+See [live preview](http://promuj-insta.pl/weather-app)
+
+## Technology used
 ```
-npm install
+Vue.js using echart.js and debounce.js with external API Express.js Server.
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### External API Server on GitHub
+See [Configuration Reference](https://github.com/ske1337/weather-api).
